@@ -64,10 +64,17 @@ def loadLevel(levelNumber):
         globals.world = Level(
             platforms = [
                 # middle
-                pygame.Rect(100,300,400,50)
+                pygame.Rect(100,500,400,50), 
+                pygame.Rect(600,550,100,50), 
+                pygame.Rect(800,600,100,50), 
+                pygame.Rect(1000,650,100,50), 
+                pygame.Rect(1200,700,400,50) 
             ],
             entities = [
-                utils.makeCoin(100,200)
+                utils.makeCoin(1300,600),
+                utils.makeCoin(1400,600),
+                utils.makeCoin(1500,600),
+                utils.makeCoin(1600,600)
             ],
             winFunc = wonLevel,
             loseFunc = lostLevel,

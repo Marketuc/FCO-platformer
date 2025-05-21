@@ -3,12 +3,13 @@ import globals
 import utils
 
 class Level:
-    def __init__(self, platforms=None, entities=None, winFunc=None, loseFunc=None, powerupSpawnPoints=None):
+    def __init__(self, platforms=None, entities=None, winFunc=None, loseFunc=None, powerupSpawnPoints=None, backgroundColor=None):
         self.platforms = platforms
         self.entities = entities
         self.winFunc = winFunc
         self.loseFunc = loseFunc
         self.powerupSpawnPoints = powerupSpawnPoints
+        self.backgroundColor = backgroundColor
     def isWon(self):
         if self.winFunc is None:
             return False
@@ -39,6 +40,9 @@ def wonLevel(level):
     return True
 
 def loadLevel(levelNumber):
+    bgColor = globals.LEVEL_BACKGROUNDS.get(levelNumber, (0, 0, 0))
+   
+
     if levelNumber == 1:
         # load level 1
         globals.world = Level(
@@ -57,7 +61,8 @@ def loadLevel(levelNumber):
             ],
             winFunc = wonLevel,
             loseFunc = lostLevel,
-            powerupSpawnPoints = [(400,260),(300,100)]
+            powerupSpawnPoints = [(400,260),(300,100)],
+            backgroundColor=bgColor
         )
     if levelNumber == 2:
         # load level 2
@@ -78,7 +83,8 @@ def loadLevel(levelNumber):
             ],
             winFunc = wonLevel,
             loseFunc = lostLevel,
-            powerupSpawnPoints = [(400,260),(300,100)]
+            powerupSpawnPoints = [(400,260),(300,100)],
+            backgroundColor=bgColor
         )
 
     elif levelNumber == 3:
@@ -101,7 +107,8 @@ def loadLevel(levelNumber):
         ],
         winFunc=wonLevel,
         loseFunc=lostLevel,
-        powerupSpawnPoints=[(500, 320), (850, 220)]
+        powerupSpawnPoints=[(500, 320), (850, 220)],
+        backgroundColor=bgColor
     )
 
     

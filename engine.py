@@ -253,7 +253,8 @@ class CameraSystem(System):
         offsetY = cameraRect.y + cameraRect.h/2 - (entity.camera.worldY * entity.camera.zoomLevel)
 
         # fill camera background
-        screen.fill(globals.BLACK)
+        screen.fill(globals.world.backgroundColor)
+
 
         # render platforms
         for p in globals.world.platforms:

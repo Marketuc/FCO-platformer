@@ -21,24 +21,70 @@ class Scene:
 
 class MainMenuScene(Scene):
     def __init__(self):
-        self.enter = ui.ButtonUI(pygame.K_RETURN, '[Enter=next]', 50, 200)
-        self.esc = ui.ButtonUI(pygame.K_ESCAPE, '[Esc=quit]', 50, 250)
+        self.enter = ui.ButtonUI(pygame.K_RETURN, '[Enter=next]', 50, 400)
+        self.esc = ui.ButtonUI(pygame.K_ESCAPE, '[Esc=quit]', 50, 450)
+        self.controls = ui.ButtonUI(pygame.K_c, '[C=controls]', 50, 500)
+
+         # Get screen size
+        screen = pygame.display.get_surface()
+        screen_size = screen.get_size()  # (width, height)
+
+        # Load and scale background image
+        self.background = pygame.transform.scale(
+            pygame.image.load('images/dinobackground.png').convert(),
+            screen_size
+        )
     def onEnter(self):
         globals.soundManager.playMusicFade('solace')
+
     def input(self, sm, inputStream):
         if inputStream.keyboard.isKeyPressed(pygame.K_RETURN):
             sm.push(FadeTransitionScene([self], [PlayerSelectScene()]))
         if inputStream.keyboard.isKeyPressed(pygame.K_ESCAPE):
             sm.pop()
+        if inputStream.keyboard.isKeyPressed(pygame.K_c):
+            sm.push(FadeTransitionScene([self], [ControlsScene()]))
+
     def update(self, sm, inputStream):
         self.enter.update(inputStream)
         self.esc.update(inputStream)
+        self.controls.update(inputStream)
+
     def draw(self, sm, screen):
-        # background
-        screen.fill(globals.DARK_GREY)
-        utils.drawText(screen, 'Main Menu', 50, 50, globals.WHITE, 255)
+        # Draw the background image instead of a solid color
+        screen.blit(self.background, (0, 0))
+
         self.enter.draw(screen)
         self.esc.draw(screen)
+        self.controls.draw(screen)
+
+
+class ControlsScene(Scene):
+    def __init__(self):
+        self.esc = ui.ButtonUI(pygame.K_ESCAPE, '[Esc=back]', 50, 300)
+    
+    def onEnter(self):
+        globals.soundManager.playMusicFade('solace')
+
+    def update(self, sm, inputStream):
+        self.esc.update(inputStream)
+
+    def input(self, sm, inputStream):
+        if inputStream.keyboard.isKeyPressed(pygame.K_ESCAPE):
+            sm.pop()
+            sm.push(FadeTransitionScene([self], [MainMenuScene()]))
+
+    def draw(self, sm, screen):
+        screen.fill((44, 117, 255))
+        utils.drawText(screen, 'Controls', 50, 50, globals.WHITE, 255)
+
+        utils.drawText(screen, 'A = Move Left', 50, 100, globals.WHITE, 255)
+        utils.drawText(screen, 'D = Move Right', 50, 150, globals.WHITE, 255)
+        utils.drawText(screen, 'W = Jump', 50, 200, globals.WHITE, 255)
+        utils.drawText(screen, 'Esc = Exit/Back', 50, 250, globals.WHITE, 255)
+
+        self.esc.draw(screen)
+
 
 class LevelSelectScene(Scene):
     def __init__(self):
@@ -62,7 +108,7 @@ class LevelSelectScene(Scene):
             
     def draw(self, sm, screen):
         # background
-        screen.fill(globals.DARK_GREY)
+        screen.fill((255, 120, 0))
         utils.drawText(screen, 'Difficulty Select', 50, 50, globals.WHITE, 255)
         self.esc.draw(screen)
 
@@ -117,7 +163,7 @@ class PlayerSelectScene(Scene):
             sm.push(FadeTransitionScene([self], []))
     def draw(self, sm, screen):
         # background
-        screen.fill(globals.DARK_GREY)
+        screen.fill((64, 224, 208))
         utils.drawText(screen, 'Player Select', 50, 50, globals.WHITE, 255)
 
         self.esc.draw(screen)
@@ -178,7 +224,7 @@ class GameScene(Scene):
         self.powerupSystem.update()
     def draw(self, sm, screen):
         # background
-        screen.fill(globals.DARK_GREY)
+        screen.fill((255, 45, 145))
         self.cameraSystem.update(screen)
 
 class WinScene(Scene):
